@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0"/>
+  <title>Doctors</title>
+
+  <link rel="stylesheet"
+        href="/css/style.css"/>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Doctor Management</h1>
+
+  <form id="doctorForm">
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Doctor Name"
+      required
+    />
+
+    <input
+      type="text"
+      id="speciality"
+      placeholder="Speciality"
+      required
+    />
+
+    <input
+      type="number"
+      id="experience"
+      placeholder="Experience"
+      required
+    />
+
+    <button type="submit">
+      Add Doctor
+    </button>
+
+  </form>
+
+  <table>
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Speciality</th>
+        <th>Experience</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody id="doctorTable"></tbody>
+
+  </table>
+
+</div>
+
+<script src="/js/doctors.js"></script>
+
+</body>
+</html>
