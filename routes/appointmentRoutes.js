@@ -1,18 +1,16 @@
-const express = require("express");
+const router = require("express").Router();
+const controller = require("../controllers/appointmentController");
 
-const router = express.Router();
+// GET (JOIN patient + doctor)
+router.get("/", controller.getAppointments);
 
-const appointmentController =
-  require("../controllers/appointmentController");
+// ADD appointment
+router.post("/", controller.addAppointment);
 
-router.post(
-  "/",
-  appointmentController.createAppointment
-);
+// UPDATE appointment
+router.put("/:id", controller.updateAppointment);
 
-router.get(
-  "/",
-  appointmentController.fetchAppointments
-);
+// DELETE appointment
+router.delete("/:id", controller.deleteAppointment);
 
 module.exports = router;

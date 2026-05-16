@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appointments</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<h1>Appointments</h1>
+
+<select id="patientSelect"></select>
+<select id="doctorSelect"></select>
+
+<input type="date" id="appointmentDate">
+
+<button onclick="addAppointment()">Book</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Patient</th>
+      <th>Phone</th>
+      <th>Doctor</th>
+      <th>Speciality</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody id="appointmentTable"></tbody>
+</table>
+
+<script src="js/appointments.js"></script>
+
+</body>
+</html>

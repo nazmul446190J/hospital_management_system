@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patients</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<h1>Patients</h1>
+
+<input id="patientName" placeholder="Name">
+<input id="patientAge" placeholder="Age">
+
+<select id="patientGender">
+  <option>Male</option>
+  <option>Female</option>
+</select>
+
+<input id="patientPhone" placeholder="Phone Number">
+
+<button onclick="addPatient()">Add Patient</button>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Phone</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody id="patientTable"></tbody>
+</table>
+
+<script src="js/patients.js"></script>
+
+</body>
+</html>

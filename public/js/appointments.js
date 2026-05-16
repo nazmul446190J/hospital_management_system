@@ -1,103 +1,80 @@
-const appointmentForm =
-  document.getElementById("appointmentForm");
+async function loadDoctors() {
+  let res = await fetch("/api/doctors");
+  let data = await res.json();
 
-const appointmentTable =
-  document.getElementById("appointmentTable");
+  let doctorSelect = document.getElementById("doctorSelect");
+  doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
 
-const patientSelect =
-  document.getElementById("patientSelect");
-
-const doctorSelect =
-  document.getElementById("doctorSelect");
-
-async function loadPatients() {
-  const response = await fetch("/api/patients");
-
-  const patients = await response.json();
-
-  patientSelect.innerHTML =
-    `<option value="">Select Patient</option>`;
-
-  patients.forEach((patient) => {
-    patientSelect.innerHTML += `
-      <option value="${patient.id}">
-        ${patient.name}
-      </option>
-    `;
+  data.forEach(d => {
+    doctorSelect.innerHTML += `
+      <option value="${d.id}">
+        ${d.name} (${d.speciality})
+      </option>`;
   });
 }
 
-async function loadDoctors() {
-  const response = await fetch("/api/doctors");
+async function loadPatients() {
+  let res = await fetch("/api/patients");
+  let data = await res.json();
 
-  const doctors = await response.json();
+  let patientSelect = document.getElementById("patientSelect");
+  patientSelect.innerHTML = `<option value="">Select Patient</option>`;
 
-  doctorSelect.innerHTML =
-    `<option value="">Select Doctor</option>`;
-
-  doctors.forEach((doctor) => {
-    doctorSelect.innerHTML += `
-      <option value="${doctor.id}">
-        Dr. ${doctor.name} - ${doctor.speciality}
-      </option>
-    `;
+  data.forEach(p => {
+    patientSelect.innerHTML += `
+      <option value="${p.id}">
+        ${p.name} (${p.phone})
+      </option>`;
   });
 }
 
 async function loadAppointments() {
-  const response =
-    await fetch("/api/appointments");
+  let res = await fetch("/api/appointments");
+  let data = await res.json();
 
-  const appointments =
-    await response.json();
+  let table = document.getElementById("appointmentTable");
+  table.innerHTML = "";
 
-  appointmentTable.innerHTML = "";
-
-  appointments.forEach((appointment) => {
-    appointmentTable.innerHTML += `
+  data.forEach(a => {
+    table.innerHTML += `
       <tr>
-        <td>${appointment.id}</td>
-        <td>${appointment.patient_name}</td>
-        <td>${appointment.doctor_name}</td>
-        <td>${appointment.speciality}</td>
-        <td>${appointment.appointment_date}</td>
-        <td>${appointment.status}</td>
+        <td>${a.id}</td>
+        <td>${a.patient_name}</td>
+        <td>${a.patient_phone}</td>
+        <td>${a.doctor_name}</td>
+        <td>${a.speciality}</td>
+        <td>${a.appointment_date}</td>
+        <td>
+          <button onclick="deleteAppointment(${a.id})">Delete</button>
+        </td>
       </tr>
     `;
   });
 }
 
-loadPatients();
-loadDoctors();
-loadAppointments();
-
-appointmentForm.addEventListener(
-  "submit",
-  async (e) => {
-
-    e.preventDefault();
-
-    const appointment = {
+async function addAppointment() {
+  await fetch("/api/appointments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
       patient_id: patientSelect.value,
       doctor_id: doctorSelect.value,
-      appointment_date:
-        document.getElementById(
-          "appointmentDate"
-        ).value,
-    };
+      appointment_date: appointmentDate.value
+    })
+  });
 
-    await fetch("/api/appointments", {
-      method: "POST",
+  loadAppointments();
+}
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+async function deleteAppointment(id) {
+  await fetch(`/api/appointments/${id}`, {
+    method: "DELETE"
+  });
 
-      body: JSON.stringify(appointment),
-    });
+  loadAppointments();
+}
 
-    appointmentForm.reset();
-
-    loadAppointments();
-  }
-);
+// INIT
+loadDoctors();
+loadPatients();
+loadAppointments();

@@ -2,36 +2,42 @@ const db = require("../config/db");
 
 const Patient = {};
 
-Patient.addPatient = (patient, callback) => {
-
-  const sql =
-    "INSERT INTO patients(name, age, gender, phone) VALUES(?,?,?,?)";
-
-  db.run(
-    sql,
-    [
-      patient.name,
-      patient.age,
-      patient.gender,
-      patient.phone
-    ],
-    function(err) {
-      callback(err);
-    }
-  );
-
+// GET ALL PATIENTS
+Patient.getAll = (cb) => {
+  db.all("SELECT * FROM patients", cb);  // ✅ MUST INCLUDE phone
 };
 
-Patient.getPatients = (callback) => {
-
-  db.all(
-    "SELECT * FROM patients",
-    [],
-    function(err, rows) {
-      callback(err, rows);
-    }
+// ADD PATIENT (FIXED ORDER)
+Patient.create = (data, cb) => {
+  db.run(
+    "INSERT INTO patients(name, age, gender, phone) VALUES (?, ?, ?, ?)",
+    [
+      data.name,
+      data.age,
+      data.gender,
+      data.phone
+    ],
+    cb
   );
+};
+// UPDATE PATIENT
+Patient.update = (id, data, cb) => {
+  db.run(
+    "UPDATE patients SET name=?, age=?, gender=?, phone=? WHERE id=?",
+    [
+      data.name,
+      data.age,
+      data.gender,
+      data.phone,
+      id
+    ],
+    cb
+  );
+};
 
+// DELETE PATIENT
+Patient.delete = (id, cb) => {
+  db.run("DELETE FROM patients WHERE id=?", [id], cb);
 };
 
 module.exports = Patient;

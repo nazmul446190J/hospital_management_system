@@ -1,18 +1,13 @@
-const express = require("express");
+const router = require("express").Router();
+const controller = require("../controllers/patientController");
 
-const router = express.Router();
+// MUST MATCH controller names EXACTLY
+router.get("/", controller.getPatients);
 
-const patientController =
-  require("../controllers/patientController");
+router.post("/", controller.addPatient);
 
-router.post(
-  "/",
-  patientController.createPatient
-);
+router.put("/:id", controller.updatePatient);   // ✅ FIXED
 
-router.get(
-  "/",
-  patientController.fetchPatients
-);
+router.delete("/:id", controller.deletePatient);
 
 module.exports = router;

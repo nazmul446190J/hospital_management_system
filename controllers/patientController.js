@@ -1,39 +1,50 @@
 const Patient = require("../models/patientModel");
 
-exports.createPatient = (req, res) => {
+// GET
+exports.getPatients = (req, res) => {
 
-  Patient.addPatient(req.body, (err) => {
+  Patient.getAll((err, rows) => {
 
     if (err) {
       console.log(err);
-
-      return res.status(500).json({
-        error: err.message
-      });
+      return res.status(500).json(err);
     }
 
-    res.json({
-      message: "Patient Added Successfully"
-    });
+    console.log("DATA FROM DB:", rows); // DEBUG
 
+    res.json(rows);
   });
 
 };
 
-exports.fetchPatients = (req, res) => {
+// ADD
 
-  Patient.getPatients((err, rows) => {
+exports.addPatient = (req, res) => {
+
+  console.log("REQ BODY:", req.body);
+
+  Patient.create(req.body, (err) => {
 
     if (err) {
-      console.log(err);
-
-      return res.status(500).json({
-        error: err.message
-      });
+      console.log("DB ERROR:", err);
+      return res.status(500).json(err);
     }
 
-    res.json(rows);
-
+    res.json({ message: "Patient added successfully" });
   });
+};
+// UPDATE (MUST EXIST)
+exports.updatePatient = (req, res) => {
+  Patient.update(req.params.id, req.body, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Updated" });
+  });
+};
 
+// DELETE
+exports.deletePatient = (req, res) => {
+  Patient.delete(req.params.id, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Deleted" });
+  });
 };

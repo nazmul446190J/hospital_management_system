@@ -1,10 +1,16 @@
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
+const controller = require("../controllers/doctorController");
 
-const doctorController = require("../controllers/doctorController");
+// GET
+router.get("/", controller.getDoctors);
 
-router.post("/", doctorController.createDoctor);
-router.get("/", doctorController.fetchDoctors);
-router.delete("/:id", doctorController.deleteDoctor);
+// ADD
+router.post("/", controller.addDoctor);
+
+// UPDATE
+router.put("/:id", controller.updateDoctor);
+
+// DELETE
+router.delete("/:id", controller.deleteDoctor);
 
 module.exports = router;

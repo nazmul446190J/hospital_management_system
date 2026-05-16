@@ -1,45 +1,33 @@
 const Appointment = require("../models/appointmentModel");
 
-exports.createAppointment = (req, res) => {
-
-  Appointment.bookAppointment(
-    req.body,
-    (err) => {
-
-      if (err) {
-        console.log(err);
-
-        return res.status(500).json({
-          error: err.message
-        });
-      }
-
-      res.json({
-        message:
-          "Appointment Booked Successfully"
-      });
-
-    }
-  );
-
+// GET ALL (JOIN patient + doctor)
+exports.getAppointments = (req, res) => {
+  Appointment.getAll((err, rows) => {
+    if (err) return res.status(500).json(err);
+    res.json(rows);
+  });
 };
 
-exports.fetchAppointments = (req, res) => {
+// ADD APPOINTMENT
+exports.addAppointment = (req, res) => {
+  Appointment.create(req.body, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Appointment booked" });
+  });
+};
 
-  Appointment.getAppointments(
-    (err, rows) => {
+// UPDATE APPOINTMENT
+exports.updateAppointment = (req, res) => {
+  Appointment.update(req.params.id, req.body, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Appointment updated" });
+  });
+};
 
-      if (err) {
-        console.log(err);
-
-        return res.status(500).json({
-          error: err.message
-        });
-      }
-
-      res.json(rows);
-
-    }
-  );
-
+// DELETE APPOINTMENT
+exports.deleteAppointment = (req, res) => {
+  Appointment.delete(req.params.id, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Appointment deleted" });
+  });
 };

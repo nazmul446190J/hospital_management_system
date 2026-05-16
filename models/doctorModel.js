@@ -1,17 +1,18 @@
 const db = require("../config/db");
 
-exports.addDoctor = (doctor, callback) => {
-  db.run(
-    "INSERT INTO doctors(name, speciality, experience) VALUES(?,?,?)",
-    [doctor.name, doctor.speciality, doctor.experience],
-    callback
-  );
-};
+const Doctor = {};
 
-exports.getDoctors = (callback) => {
-  db.all("SELECT * FROM doctors", [], callback);
-};
+Doctor.getAll = (cb) => db.all("SELECT * FROM doctors", cb);
 
-exports.deleteDoctor = (id, callback) => {
-  db.run("DELETE FROM doctors WHERE id=?", [id], callback);
-};
+Doctor.create = (data, cb) =>
+  db.run("INSERT INTO doctors(name,speciality) VALUES(?,?)",
+  [data.name, data.speciality], cb);
+
+Doctor.update = (id, data, cb) =>
+  db.run("UPDATE doctors SET name=?, speciality=? WHERE id=?",
+  [data.name, data.speciality, id], cb);
+
+Doctor.delete = (id, cb) =>
+  db.run("DELETE FROM doctors WHERE id=?", [id], cb);
+
+module.exports = Doctor;
